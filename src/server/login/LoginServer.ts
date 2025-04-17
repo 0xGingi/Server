@@ -14,6 +14,7 @@ import Environment from '#/util/Environment.js';
 import { toSafeName } from '#/util/JString.js';
 import { printInfo } from '#/util/Logger.js';
 import { getUnreadMessageCount } from '#/util/Messages.js';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { startManagementWeb } from '#/web.js';
 
 async function updateHiscores(username: string, player: Player, profile: string) {
@@ -134,11 +135,11 @@ export default class LoginServer {
     }
 
     constructor() {
-        if (Environment.LOGIN_SERVER && !Environment.EASY_STARTUP) {
-            startManagementWeb();
-        }
-
-        this.server = new WebSocketServer({ port: Environment.LOGIN_PORT, host: '0.0.0.0' }, () => {
+        this.server = new WebSocketServer({ 
+            port: Environment.LOGIN_PORT, 
+            host: '0.0.0.0',
+            perMessageDeflate: false 
+        }, () => {
             printInfo(`Login server listening on port ${Environment.LOGIN_PORT}`);
         });
 
