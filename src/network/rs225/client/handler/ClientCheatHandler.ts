@@ -42,6 +42,23 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
             return false;
         }
 
+        if (cmd === 'bank') {
+            // custom
+            const bankScript = ScriptProvider.getByName('[label,openbank]');
+            if (bankScript) {
+                if (!player.canAccess()) {
+                    player.messageGame('Please finish what you are doing first.');
+                } else {
+                    player.closeModal();
+                    player.executeScript(ScriptRunner.init(bankScript, player), false);
+                }
+            } else {
+                player.messageGame('Bank script not found.');
+            }
+            // Return true here so it doesn't fall through to other checks
+            return true;
+        }
+
         if (player.staffModLevel >= 2) {
             player.addSessionLog(LoggerEventType.MODERATOR, 'Ran cheat', cheat);
         }
@@ -522,6 +539,7 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
                 player.clearInteraction();
                 player.unsetMapFlag();
 
+                player.messageGame(`You have been teleported to ${other.username}`);
                 player.teleJump(other.x, other.z, other.level);
             } else if (cmd === 'setvis' && Environment.NODE_PRODUCTION) {
                 // authentic
@@ -590,6 +608,21 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
                 } else {
                     player.messageGame(`Player '${args[0]}' does not exist or is not logged in.`);
                 }
+            } else if (cmd === 'teletome') {
+                // authentic
+                if (args.length < 1) {
+                    // ::teletome <username>
+                    return false;
+                }
+
+                const other = World.getPlayerByUsername(args[0]);
+                if (!other) {
+                    player.messageGame(`${args[0]} is not logged in.`);
+                    return false;
+                }
+
+                player.messageGame(`${other.username} has been teleported to you`);
+                other.teleJump(player.x, player.z, player.level);
             }
         }
 

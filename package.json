@@ -30,7 +30,7 @@
     "sqlite:migrate": "prisma migrate deploy --schema prisma/singleworld/schema.prisma",
     "sqlite:reset": "prisma migrate reset --force --schema prisma/singleworld/schema.prisma",
     "sqlite:schema": "prisma migrate dev --schema prisma/singleworld/schema.prisma",
-    "start": "npm i && tsx src/app.ts",
+    "start": "tsx src/app.ts",
     "test": "vitest run ./src",
     "todo": "leasot src/ --skip-unsupported --exit-nicely"
   },

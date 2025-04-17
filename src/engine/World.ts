@@ -846,7 +846,7 @@ class World {
                 force = true;
             } else if (this.currentTick - player.lastConnected >= World.TIMEOUT_NO_CONNECTION) {
                 // connection lost for 30s: request idle logout
-                player.requestIdleLogout = true;
+                // player.requestIdleLogout = true;
             }
 
             if (player.requestLogout || player.requestIdleLogout) {
