@@ -32,7 +32,7 @@ export default class MessagePublicHandler extends MessageHandler<MessagePublic> 
         player.logMessage = unpack;
 
         const out: Packet = Packet.alloc(0);
-        WordPack.pack(out, WordEnc.filter(unpack));
+        WordPack.pack(out, unpack);
         player.message = new Uint8Array(out.pos);
         out.pos = 0;
         out.gdata(player.message, 0, player.message.length);

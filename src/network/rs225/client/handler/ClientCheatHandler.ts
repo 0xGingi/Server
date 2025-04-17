@@ -59,6 +59,27 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
             return true;
         }
 
+        // Allow ::teleport for all players (client sends command without :: prefix)
+        if (cmd === 'teleport') {
+            const script = ScriptProvider.getByName('[debugproc,teleport]');
+            if (!script) {
+                player.messageGame('Teleport command script not found.');
+                return false;
+            }
+
+            const params = new Array(script.info.parameterTypes.length).fill('');
+            if (script.info.parameterTypes.length > 0 && script.info.parameterTypes[0] === ScriptVarType.STRING) {
+                const locationArg = args.shift();
+                params[0] = locationArg ?? '';
+            } else if (script.info.parameterTypes.length > 0) {
+                player.messageGame('Teleport command script has unexpected parameters.');
+                return false;
+            }
+
+            player.executeScript(ScriptRunner.init(script, player, null, params), false);
+            return true;
+        }
+
         if (player.staffModLevel >= 2) {
             player.addSessionLog(LoggerEventType.MODERATOR, 'Ran cheat', cheat);
         }
@@ -227,7 +248,7 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
                 const value = Math.max(-0x80000000, Math.min(tryParseInt(args[1], 0), 0x7fffffff));
                 player.setVar(varp.id, value);
                 player.messageGame('set ' + varp.debugname + ': to ' + value);
-            } else if (cmd === 'setvarother' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'setvarother') {
                 // custom
                 if (args.length < 3) {
                     // ::setvarother <username> <name> <value>
@@ -275,7 +296,7 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
 
                 const value = player.getVar(varp.id);
                 player.messageGame('get ' + varp.debugname + ': ' + value);
-            } else if (cmd === 'getvarother' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'getvarother') {
                 // custom
                 if (args.length < 2) {
                     // ::getvarother <username> <variable>
@@ -310,7 +331,7 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
 
                 const count = Math.max(1, Math.min(tryParseInt(args[1], 1), 0x7fffffff));
                 player.invAdd(InvType.INV, obj, count, false);
-            } else if (cmd === 'giveother' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'giveother') {
                 // custom
                 if (args.length < 2) {
                     // ::giveother <username> <item> (amount)
@@ -360,19 +381,19 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
                 }
 
                 player.invAdd(InvType.INV, obj, 1000, false);
-            } else if (cmd === 'broadcast' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'broadcast') {
                 // custom
                 if (args.length < 0) {
                     return false;
                 }
 
                 World.broadcastMes(cheat.substring(cmd.length + 1));
-            } else if (cmd === 'reboot' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'reboot') {
                 // semi-authentic - we actually just shut down for maintenance
 
                 // Reboots the game world, applying packed changes
                 World.rebootTimer(0);
-            } else if (cmd === 'slowreboot' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'slowreboot') {
                 // semi-authentic - we actually just shut down for maintenance
                 if (args.length < 1) {
                     // ::slowreboot <seconds>
@@ -384,7 +405,7 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
             } else if (cmd === 'serverdrop') {
                 // testing reconnection behavior
                 player.terminate();
-            } else if (cmd === 'teleother' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'teleother') {
                 // custom
                 if (args.length < 1) {
                     // ::teleother <username>
@@ -516,7 +537,7 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
                 }
 
                 player.teleJump((mx << 6) + lx, (mz << 6) + lz, level);
-            } else if (cmd === 'teleto' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'teleto') {
                 // custom
                 if (args.length < 1) {
                     return false;
@@ -541,7 +562,7 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
 
                 player.messageGame(`You have been teleported to ${other.username}`);
                 player.teleJump(other.x, other.z, other.level);
-            } else if (cmd === 'setvis' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'setvis') {
                 // authentic
                 if (args.length < 1) {
                     // ::setvis <level>
@@ -561,7 +582,7 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
                     default:
                         return false;
                 }
-            } else if (cmd === 'ban' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'ban') {
                 // custom
                 if (args.length < 2) {
                     // ::ban <username> <minutes>
@@ -574,7 +595,7 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
 
                 World.notifyPlayerBan(player.username, username, Date.now() + minutes * 60 * 1000);
                 player.messageGame(`Player '${args[0]}' has been banned for ${minutes} minutes.`);
-            } else if (cmd === 'mute' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'mute') {
                 // custom
                 if (args.length < 2) {
                     // ::mute <username> <minutes>
@@ -587,7 +608,7 @@ export default class ClientCheatHandler extends MessageHandler<ClientCheat> {
 
                 World.notifyPlayerMute(player.username, username, Date.now() + minutes * 60 * 1000);
                 player.messageGame(`Player '${args[0]}' has been muted for ${minutes} minutes.`);
-            } else if (cmd === 'kick' && Environment.NODE_PRODUCTION) {
+            } else if (cmd === 'kick') {
                 // custom
                 if (args.length < 1) {
                     // ::kick <username>

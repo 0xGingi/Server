@@ -291,11 +291,8 @@ export class NetworkPlayer extends Player {
             this.buildArea.rebuildZones();
 
             // zone triggers
-            const lastWasMulti = World.gameMap.isMulti(this.lastZone);
-            const nowIsMulti = World.gameMap.isMulti(zone);
-            if (lastWasMulti != nowIsMulti) {
-                this.write(new SetMultiway(nowIsMulti));
-            }
+            // Always set multiway to true
+            this.write(new SetMultiway(true));
 
             if (this.lastZone !== -1) {
                 const { level, x, z } = CoordGrid.unpackCoord(this.lastZone);

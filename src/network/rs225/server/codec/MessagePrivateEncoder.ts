@@ -17,7 +17,7 @@ export default class MessagePrivateEncoder extends MessageEncoder<MessagePrivate
         buf.p8(message.from);
         buf.p4(message.messageId);
         buf.p1(staffLvl);
-        WordPack.pack(buf, WordEnc.filter(message.msg));
+        WordPack.pack(buf, message.msg);
     }
 
     test(message: MessagePrivate): number {

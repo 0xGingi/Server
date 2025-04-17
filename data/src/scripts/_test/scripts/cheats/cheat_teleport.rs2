@@ -1,0 +1,41 @@
+[debugproc,teleport](string $location)
+if (p_finduid(uid) = true) {
+    // List locations if no argument is given
+    if (compare($location, "") = 0) {
+        mes("Usage: ::teleport location");
+        mes("Available: varrock (v), lumbridge (l), duel (da), falador (fally)");
+        mes("           seers (cammy), ardougne (ardy), edgeville (edge), canifis");
+        return;
+    }
+
+    // Teleport logic
+    if (compare($location, "varrock") = 0 | compare($location, "v") = 0) {
+        p_telejump(0_50_53_12_32); // Varrock Square
+        mes("Teleporting to Varrock Square...");
+    } else if (compare($location, "duel") = 0 | compare($location, "duelarena") = 0 | compare($location, "da") = 0) {
+        p_telejump(0_51_50_51_35); // Duel Arena entrance
+        mes("Teleporting to Duel Arena...");
+    } else if (compare($location, "lumbridge") = 0 | compare($location, "lummy") = 0 | compare($location, "l") = 0) {
+        p_telejump(0_50_50_22_26); // Lumbridge Castle Courtyard
+        mes("Teleporting to Lumbridge...");
+    } else if (compare($location, "falador") = 0 | compare($location, "fally") = 0) {
+        p_telejump(0_46_53_49_59); // Falador Square
+        mes("Teleporting to Falador...");
+    } else if (compare($location, "seers") = 0 | compare($location, "cammy") = 0 | compare($location, "camelot") = 0) {
+        p_telejump(0_42_54_13_34); // Seers' Village Bank
+        mes("Teleporting to Seers' Village...");
+    } else if (compare($location, "ardougne") = 0 | compare($location, "ardy") = 0) {
+        p_telejump(0_40_51_52_37); // Ardougne Market
+        mes("Teleporting to Ardougne...");
+    } else if (compare($location, "edgeville") = 0 | compare($location, "edge") = 0) {
+        p_telejump(0_48_55_17_52); // Edgeville Bank
+        mes("Teleporting to Edgeville...");
+    } else if (compare($location, "canifis") = 0) {
+        p_telejump(0_54_54_47_56); // Canifis Center
+        mes("Teleporting to Canifis...");
+    } else {
+        mes("Unknown location: <$location>");
+        mes("Available: varrock (v), lumbridge (l), duel (da), falador (fally)");
+        mes("           seers (cammy), ardougne (ardy), edgeville (edge), canifis");
+    }
+} 
