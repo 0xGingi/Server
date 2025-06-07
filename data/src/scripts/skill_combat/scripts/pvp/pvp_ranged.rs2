@@ -2,7 +2,7 @@
 if (~duel_arena_ranged_check = false) {
     return;
 }
-if (.stat(hitpoints) = 0) {
+if (.%death = ^true) {
     p_stopaction;
     return;
 }
@@ -50,7 +50,7 @@ if ($rhand = null) {
     %action_delay = add(map_clock, 4);
 } else {
     %action_delay = add(map_clock, oc_param($rhand, attackrate));
-    def_int $poison_severity = oc_param($rhand, poison_severity);
+    def_int $poison_severity = oc_param($ammo, poison_severity);
     if ($damage > 0 & $poison_severity > 0 & random(4) = 0) { // 1/4 chance to poison
         .queue(poison_player, 0, $poison_severity);
     }
@@ -65,7 +65,7 @@ if (%damagestyle = ^style_ranged_rapid) {
 [proc,pvp_ranged_use_weapon](obj $rhand, obj $ammo)(int)
 spotanim_pl(oc_param($ammo, proj_launch), 96, 0);
 if (~in_duel_arena(coord) = true) {
-    inv_moveitem(worn, tradeoffer, $ammo, 1); // give rangers their arrows back from duels
+    inv_moveitem(worn, duelarrows, $ammo, 1); // give rangers their arrows back from duels
 } else {
     inv_del(worn, $ammo, 1);
 }
@@ -85,13 +85,13 @@ return($delay);
 [proc,ranged_dropammo_pvp](obj $ammo, int $chance, int $delay)
 if (~in_duel_arena(coord) = true) {
     if (random($chance) = 0) {
-        inv_del(tradeoffer, $ammo, 1);
+        inv_del(duelarrows, $ammo, 1);
     }
     return;
 }
 if (random($chance) ! 0) {
     world_delay($delay);
     if (map_blocked(.coord) = false) {
-        obj_add(.coord, enum(obj, namedobj, ranged_ammo, $ammo), 1, 200);
+        obj_add(.coord, enum(obj, namedobj, ranged_ammo, $ammo), 1, ^lootdrop_duration);
     }
 }

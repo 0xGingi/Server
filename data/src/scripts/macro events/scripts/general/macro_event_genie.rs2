@@ -1,5 +1,5 @@
 [proc,macro_event_genie_spawn]
-spotanim_map(small_smokepuff, npc_coord, 124, 0);
+spotanim_map(smokepuff, npc_coord, 124, 0);
 sound_synth(genie_appear, 0, 0);
 npc_say("Greetings <text_gender("master", "mistress")> <displayname>!");
 %npc_macro_event_target = uid;
@@ -59,7 +59,7 @@ npc_delay(2);
 if (uid ! %npc_macro_event_target) {
     // https://youtu.be/qNQYgiNMBes?t=134
     if (.finduid(%npc_macro_event_target) = true) {
-        ~chatnpc("<p,sad>Sorry, but I'm trying to talk to <.displayname>. However, <.text_gender("he", "she")> appears to be ignoring me..."); 
+        ~chatnpc("<p,sad>Sorry, but I'm trying to talk to <.displayname>.|However, <.text_gender("he", "she")> appears to be ignoring me..."); 
         return;
     }
     ~chatnpc("<p,sad>Sorry, but I'm trying to talk to another player.|However, they appear to be ignoring me...");

@@ -15,6 +15,7 @@ if(inzone(0_46_47_0_0, 0_46_47_32_63, npc_coord) = true) {
 ~chatnpc("<p,neutral>Follow me.");
 if_close;
 npc_setmode(none);
+npc_walk(npc_coord);
 p_delay(0);
 npc_walk(0_46_47_45_40);
 p_delay(1);
@@ -118,7 +119,7 @@ npc_setmode(opplayer2);
 
 [ai_queue3,foreman]
 gosub(npc_death);
-if(npc_findhero = true) {
+if(npc_findhero = ^true) {
     // queued, no if_close
     if((%grandtree_progress = ^grandtree_released_prison | %grandtree_progress = ^grandtree_obtained_lumber_order) & ~obj_gettotal(grandtree_order) = 0) {
         queue(queue_defeat_foreman, 0, npc_uid);

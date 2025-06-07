@@ -1,4 +1,4 @@
-import type { ColumnType } from "kysely";
+import type { ColumnType } from 'kysely';
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>;
@@ -97,9 +97,12 @@ export type message = {
     thread_id: number;
     sender_id: number;
     sender_ip: string;
-    sender: Generated<string>;
     content: string;
     created: Generated<string>;
+    edited: string | null;
+    edited_by: number | null;
+    deleted: string | null;
+    deleted_by: number | null;
 };
 export type message_status = {
     id: Generated<number>;
@@ -107,6 +110,10 @@ export type message_status = {
     account_id: number;
     read: string | null;
     deleted: string | null;
+};
+export type message_tag = {
+    tag_id: number;
+    thread_id: number;
 };
 export type message_thread = {
     id: Generated<number>;
@@ -116,11 +123,11 @@ export type message_thread = {
     subject: string;
     created: Generated<string>;
     updated: Generated<string>;
-    read: string | null;
-    closed: string | null;
-    to_deleted: string | null;
-    from_deleted: string | null;
     messages: Generated<number>;
+    closed: string | null;
+    closed_by: number | null;
+    marked_spam: string | null;
+    marked_spam_by: number | null;
 };
 export type mod_action = {
     id: Generated<number>;

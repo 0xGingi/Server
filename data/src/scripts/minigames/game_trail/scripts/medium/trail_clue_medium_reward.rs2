@@ -4,9 +4,10 @@ def_int $roll = 0;
 def_int $rare = 0;
 
 while ($roll < $rolls) {
-    // Rare drop chance was 1/11 in OSRS in 2019. @https://twitter.com/JagexTide/status/1131933683714330624, 112 items in 2019, there are 13 in May 04
-    // so the chance is 1/95 ((112/13) * 11)
-    if(random(95) = 0) {
+    // Rare drop chance was 1/21 in Dec 2006. https://www.reddit.com/r/2007scape/comments/3mxll7/clue_reward_mechanics_and_odds_of_rewards/, 
+    // 44 items in 2006, there are 12 in May 04
+    // so the chance is 1/77 ((44/12) * 21)
+    if(random(77) = 0) {
         $rare = calc($rare + 1);
         gosub(trail_clue_medium_rare);
     } else {
@@ -55,20 +56,19 @@ switch_int ($random) {
 }
 
 [proc,trail_clue_medium_rare]
-def_int $random = random(13);
+def_int $random = random(12);
 
-switch_int ($random){
-    case 0 : inv_add(trail_rewardinv, boots_wizard, 1);
-    case 1 : inv_add(trail_rewardinv, boots_ranger, 1);
-    case 2 : inv_add(trail_rewardinv, adamant_full_helm_trim, 1);
-    case 3 : inv_add(trail_rewardinv, adamant_platebody_trim, 1);
-    case 4 : inv_add(trail_rewardinv, adamant_platelegs_trim, 1);
-    case 5 : inv_add(trail_rewardinv, adamant_kiteshield_trim, 1);
-    case 6 : inv_add(trail_rewardinv, adamant_platebody_gold, 1);
-    case 7 : inv_add(trail_rewardinv, adamant_platelegs_gold, 1);
-    case 8 : inv_add(trail_rewardinv, adamant_full_helm_gold, 1);
-    case 9 : inv_add(trail_rewardinv, adamant_kiteshield_gold, 1);
-    case 10 : inv_add(trail_rewardinv, headband_red, 1);
-    case 11 : inv_add(trail_rewardinv, headband_black, 1);
-    case 12 : inv_add(trail_rewardinv, headband_brown, 1);
+switch_int ($random) {
+    case 0 : inv_add(trail_rewardinv, boots_ranger, 1);
+    case 1 : inv_add(trail_rewardinv, adamant_full_helm_trim, 1);
+    case 2 : inv_add(trail_rewardinv, adamant_platebody_trim, 1);
+    case 3 : inv_add(trail_rewardinv, adamant_platelegs_trim, 1);
+    case 4 : inv_add(trail_rewardinv, adamant_kiteshield_trim, 1);
+    case 5 : inv_add(trail_rewardinv, adamant_platebody_gold, 1);
+    case 6 : inv_add(trail_rewardinv, adamant_platelegs_gold, 1);
+    case 7 : inv_add(trail_rewardinv, adamant_full_helm_gold, 1);
+    case 8 : inv_add(trail_rewardinv, adamant_kiteshield_gold, 1);
+    case 9 : inv_add(trail_rewardinv, headband_red, 1);
+    case 10 : inv_add(trail_rewardinv, headband_black, 1);
+    case 11 : inv_add(trail_rewardinv, headband_brown, 1);
 }

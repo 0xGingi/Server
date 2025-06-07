@@ -8,7 +8,7 @@
 // info: Get the world's current cycle count
 [command,map_clock]()(int)
 // info: Returns true if the world is configured as a members world
-[command,map_members]()(boolean)
+[command,map_members]()(int)
 // info: Get the number of players in a given area
 [command,map_playercount](coord $coord1, coord $coord2)(int)
 // info: Search (hunt) for players in a given area
@@ -33,8 +33,6 @@
 [command,.inzone](coord $from, coord $to, coord $pos)(boolean) // todo: replace all instances of this with inzone, should not have secondary
 // info: Returns true if $from has an unbroken line-of-walk to $to
 [command,lineofwalk](coord $from, coord $to)(boolean)
-// info: Roll a skill success check
-[command,stat_random](int $level, int $low, int $high)(boolean)
 // info: Play a spotanim on a tile
 [command,spotanim_map](spotanim $anim, coord $coord, int $height, int $delay)
 // [command,map_anim](coord $coord, spotanim $spotanim, int $height, int $delay) // this is the name for the packet
@@ -240,6 +238,10 @@
 [command,stat_drain](stat $stat, int $constant, int $percent)
 // info: Drain current level of $stat for the secondary player
 [command,.stat_drain](stat $stat, int $constant, int $percent)
+// info: Roll a skill success check
+[command,stat_random](stat $stat, int $low, int $high)(boolean)
+// info: Roll a skill success check for the secondary player
+[command,.stat_random](stat $stat, int $low, int $high)(boolean)
 // info: Get the player's UID to use in finduid/p_finduid later
 [command,uid]()(player_uid)
 // info: Get the secondary player's UID to use in finduid/p_finduid later
@@ -323,8 +325,6 @@
 [command,midi_song](string $song)
 // info: Play a jingle (advancing levels, completing quests, ...)
 [command,midi_jingle](string $jingle, int $length)
-// info: Play a jingle for the secondary player (advancing levels, completing quests, ...)
-[command,.midi_jingle](string $jingle, int $length)
 // info: Show the hint arrow at $coord
 [command,hint_coord](int $offset, coord $coord, int $height)
 // info: Start a softtimer on the active_player
@@ -529,6 +529,10 @@
 [command,npc_find](coord $coord, npc $npc, int $distance, int $checkvis)(boolean)
 // info: Return true if a specific secondary npc exists at $coord and passes a visibility check
 [command,.npc_find](coord $coord, npc $npc, int $distance, int $checkvis)(boolean)
+// info: Return true if a specific npc_category exists at $coord and passes a visibility check
+[command,npc_findcat](coord $coord, category $category, int $distance, int $checkvis)(boolean)
+// info: Return true if a specific secondary npc_category exists at $coord and passes a visibility check
+[command,.npc_findcat](coord $coord, category $category, int $distance, int $checkvis)(boolean)
 // info: Search for npcs in a given area
 [command,npc_findall](coord $coord, npc $npc, int $distance, int $checkvis)
 // info: Search for secondary npcs in a given area
@@ -542,7 +546,7 @@
 // info: Return true if a specific secondary npc exists at $coord
 [command,.npc_findexact](coord $coord, npc $npc)(boolean)
 // info: Return true if the player that has dealt the most damage to this npc is in the world
-[command,npc_findhero]()(boolean)
+[command,npc_findhero]()(int)
 // info: Get a param on the current npc
 [command,npc_param]/*(param $param)(dynamic)*/
 // info: Queue a script on a npc
@@ -941,7 +945,7 @@
 // info: Set a bit of a number
 [command,setbit](int $value, int $bit)(int)
 // info: Return true if a bit is set
-[command,testbit](int $value, int $bit)(boolean)
+[command,testbit](int $value, int $bit)(int)
 // info: Get the remainder of $n1 / $n2
 [command,modulo](int $n1, int $n2)(int)
 // info: Raise $n1 to the power of $n2

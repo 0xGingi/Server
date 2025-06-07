@@ -56,7 +56,7 @@ p_delay(2);
 
 [label,mcannon_fix_broken_railing](int $railing_num)
 // If the railing has been replaced.
-if (testbit(%mcannon_railings, $railing_num) = true) {
+if (testbit(%mcannon_railings, $railing_num) = ^true) {
     mes("You have already fixed this railing.");
     return;
 }
@@ -75,7 +75,7 @@ if ($choice = 1) {
     mes("You attempt to replace the missing railing...");
 
     // Pulled numbers from: https://oldschool.runescape.wiki/w/Railing
-    if (stat_random(stat(crafting), 60, 150) = true) {
+    if (stat_random(crafting, 60, 150) = true) {
         mes("You replace the railing with no problems.");
         p_delay(2);
         %mcannon_railings = setbit(%mcannon_railings, $railing_num);

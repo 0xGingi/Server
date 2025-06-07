@@ -95,6 +95,7 @@ if (~inzone_coord_pair_table(sheepherder_pen_gate, npc_coord) = true) {
     npc_add($npc_coord, $npc, 150);
     npc_facesquare(movecoord(npc_coord, 0, 0, -1));
     npc_setmode(none);
+    npc_walk(npc_coord);
     %sheepherder_disposal = setbit(%sheepherder_disposal, $npc_start_bit);
     mes("The sheep obligingly jumps over the gate and into the enclosure.");
 }
@@ -160,7 +161,7 @@ if (~inzone_coord_pair_table(sheepherder_in_pen, npc_coord) = true) {
         npc_anim(npc_param(death_anim), 0);
         p_delay(2);
         npc_del;
-        obj_add(npc_coord, $npc_bones, 1, 100);
+        obj_add(npc_coord, $npc_bones, 1, calc(^lootdrop_duration / 2));
     // Attempting to kill sheep in pen but has already killed that sheep.
     // can't do this on OSRS since your sheep are instanced.
     } else if (getbit_range(%sheepherder_disposal, $npc_start_bit, calc($npc_start_bit + 2)) = 6

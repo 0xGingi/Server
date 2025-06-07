@@ -43,7 +43,7 @@ if($valves_value = 0) {
 def_int $i = 0;
 def_int $counter = 0;
 while($i < 5) {
-    if(testbit(%hazeelcult_valves, $i) = true) {
+    if(testbit(%hazeelcult_valves, $i) = ^true) {
         $counter = calc($counter + 1);
         $i = calc($i + 1);
     } else {
@@ -83,7 +83,7 @@ mes("You can hear there is a hollow behind this wall."); // from rs3
 
 [oploc1,loc_2851]
 if(%hazeelcult_progress = ^hazeelcult_given_armour_or_scroll & %hazeelcult_side = ^hazeelcult_goodside) {
-    ~mesbox("You search the cupbaord thoroughly. You find a bottle of poison and a mysterious amulet. You pass your discovery on to Ceril.");
+    ~mesbox("You search the cupboard thoroughly. You find a bottle of poison and a mysterious amulet. You pass your discovery on to Ceril.");
     ~chatplayer("<p,angry>Ceril!");
     if (npc_find(coord, ceril_carnillean, 6, 0) = false) { 
         return;

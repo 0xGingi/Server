@@ -23,10 +23,10 @@ if (inzone(0_52_53_0_0, 0_52_53_63_63, coord) = true) {
 }
 
 // Treasure Trails
-if(map_members = true & ~trail_hasclue_inv = true) {
+if(map_members = ^true & ~trail_hasclue_inv = true) {
     def_obj $clue = ~trail_getclue_inv;
 
-    if(~trail_clue_coord($clue) = true) {
+    if(~trail_clue_coord($clue) = true & oc_param($clue, trail_casket) ! null) {
         def_boolean $sextant_clue = oc_param($clue, trail_sextant);
         def_coord $trail_coord = oc_param($clue, trail_coord);
         // for coord clues, https://www.youtube.com/watch?v=rcNbwik5-Ig looking at wiki and this 2013 video you can be 1 tile off and it will still work
@@ -39,7 +39,7 @@ if(map_members = true & ~trail_hasclue_inv = true) {
         if(distance(coord, $trail_coord) <= 1) {
             if(oc_param($clue, trail_guardian) ! null) {
                 def_npc $guard = oc_param($clue, trail_guardian);
-                if($guard = zamorak_wizard & testbit(%trail_clue, 4) = false) {
+                if($guard = zamorak_wizard & testbit(%trail_clue, 4) = ^false) {
                     npc_huntall(coord, 10, 0); // zamorak/saradomin wizards range
                     while (npc_huntnext = true) {
                         if(npc_type = zamorak_wizard & %npc_aggressive_player = uid) {

@@ -1,5 +1,5 @@
 [opnpc1,crest_dimintheis]
-if(map_members = false) {
+if(map_members = ^false) {
     if(%crest_progress = ^crest_not_started) {
         ~chatnpc("<p,neutral>Hello. My name is Dimintheis, of the noble family Fitzharmon.");
         ~chatplayer("<p,confused>Why would a nobleman live in a place like this?");
@@ -80,8 +80,10 @@ else {
 
 [label,crest_dimintheis_complete]
 ~chatplayer("<p,neutral>I have retrieved your crest.");
-// https://youtu.be/e8btuenT4nE?si=1d0Zf6EvXq90iMco&t=1169, OSRS takes all crest pieces from bank/inv, rs3 + classic doesn't though so assuming that was an OSRS change
-inv_del(inv, family_crest, 1);
+// https://youtu.be/e8btuenT4nE?si=1d0Zf6EvXq90iMco&t=1169, OSRS takes all crest pieces from bank/inv
+// confirm this was the original behaviour (it's not the case on RSC)
+inv_del(inv, family_crest, ^max_32bit_int);
+inv_del(bank, family_crest, ^max_32bit_int);
 queue(crest_complete, 0);
 ~chatnpc("<p,happy>Adventurer... I can only thank you for your kindness, although the words are insufficient to express the gratitude I feel!");
 ~chatnpc("<p,happy>You are truly a hero in every sense, and perhaps your efforts can begin to patch the wounds that have torn this family apart...");
@@ -92,17 +94,17 @@ queue(crest_complete, 0);
 
 [label,crest_dimintheis_gauntlets]
 ~chatnpc("<p,happy>You have my eternal gratitude adventurer, for all you have done in saving my family's honour. Perhaps some day my sons will overcome their differences.");
-if (testbit(%crest_spells_levers_gauntlets, ^crest_cooking_gauntlets_chosen) = true) {
+if (testbit(%crest_spells_levers_gauntlets, ^crest_cooking_gauntlets_chosen) = ^true) {
     if (~obj_gettotal(gauntlets_of_cooking) = 0) {
         @crest_dimintheis_offer_gauntlets(gauntlets_of_cooking);
     }
 }
-else if (testbit(%crest_spells_levers_gauntlets, ^crest_goldsmithing_gauntlets_chosen) = true) {
+else if (testbit(%crest_spells_levers_gauntlets, ^crest_goldsmithing_gauntlets_chosen) = ^true) {
     if (~obj_gettotal(gauntlets_of_goldsmithing) = 0) {
         @crest_dimintheis_offer_gauntlets(gauntlets_of_goldsmithing);
     }
 }
-else if (testbit(%crest_spells_levers_gauntlets, ^crest_chaos_gauntlets_chosen) = true) {
+else if (testbit(%crest_spells_levers_gauntlets, ^crest_chaos_gauntlets_chosen) = ^true) {
     if (~obj_gettotal(gauntlets_of_chaos) = 0) {
         @crest_dimintheis_offer_gauntlets(gauntlets_of_chaos);
     }

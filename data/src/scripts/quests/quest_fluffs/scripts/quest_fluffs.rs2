@@ -114,7 +114,7 @@ switch_int ($option) {
 }
 
 [oploc1,loc_2618]
-if(coordz(coord) < coordz(loc_coord) & map_members = false) {
+if(coordz(coord) < coordz(loc_coord) & map_members = ^false) {
     mes(^mes_members_do_that); // guess
     return; 
 }
@@ -128,7 +128,12 @@ if(coordz(coord) < coordz(loc_coord)) {
 }
 p_teleport($start_coord);
 p_delay(0);
-~agility_exactmove(human_walk_style, 30, 2, $start_coord, $end_coord, 0, 60, $dir, true);
+if(%lumberyard_fence_used > map_clock) {
+    mes("The fence is being climbed by someone else."); 
+    return;
+}
+%lumberyard_fence_used = calc(map_clock + 3);
+~agility_exactmove(human_walk_style, 0, 2, $start_coord, $end_coord, 0, 60, $dir, true);
 
 [opheldu,doogle_leaves]
 if(last_useitem = raw_sardine) {
@@ -225,8 +230,10 @@ if (last_useitem = bucket_milk) {
     inv_del(inv, gertrudekittens, 1);
     anim(human_pickupfloor, 0);
     npc_setmode(none);
+    npc_walk(npc_coord);
     .npc_add(coord, lost_kitten, ^max_32bit_int);
     .npc_setmode(none);
+    .npc_walk(.npc_coord);
     p_delay(1);
     npc_say("Purr...");
     p_delay(0);
@@ -293,6 +300,7 @@ mes("You can hear kittens mewing close by...");
 inv_delslot(inv, last_slot);
 npc_add(coord, lost_kitten, 10);
 npc_setmode(none);
+npc_walk(npc_coord);
 p_delay(0);
 mes("You place the kitten on the floor.");
 p_delay(0);
@@ -306,20 +314,5 @@ npc_del;
 [queue,fluffs_complete] //imgur.com/6ePHvef
 session_log(^log_adventure, "Quest complete: Gertrude's Cat");
 %questpoints = calc(%questpoints + ^fluffs_questpoints);
-// Random quest complete jingle.
-def_int $random = random(128);
-if ($random < 32) {
-    // The least common music that plays when completing a quest.
-    midi_jingle(^quest_complete_3_jingle, ^quest_complete_3_millis);
-} else if ($random < 64) {
-    // A less common music that plays when completing a quest.
-    midi_jingle(^quest_complete_2_jingle, ^quest_complete_2_millis);
-} else {
-    // The most common music that plays when completing a quest.
-    midi_jingle(^quest_complete_1_jingle, ^quest_complete_1_millis);
-}
 stat_advance(cooking, 15250);
-if_openmain(questscroll_fluffs);
-if_setcolour(questlist:fluffs, ^green_rgb);
-if_settab(questlist, ^tab_quest_journal);
-mes("Congratulations! Quest complete!");
+~send_quest_complete(questlist:fluffs, null, 0, ^fluffs_questpoints, null);

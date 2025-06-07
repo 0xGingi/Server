@@ -1,5 +1,5 @@
 [proc,macro_event_mysterious_old_man_general_spawn]
-spotanim_map(small_smokepuff, npc_coord, 124, 0);
+spotanim_map(smokepuff, npc_coord, 124, 0);
 sound_synth(smokepuff, 0, 0);
 npc_anim(emote_bow, 20);
 npc_say("Greetings <displayname>!");
@@ -58,8 +58,9 @@ npc_delay(2);
 [opnpc1,macro_event_mysterious_old_man_general]
 if (uid ! %npc_macro_event_target) {
     // https://youtu.be/U_TRFGTfIY0?t=276
+    // no comma and 'ignorning' is authentic
     if (.finduid(%npc_macro_event_target) = true) {
-        ~chatnpc("<p,sad>Sorry, but I'm trying to talk to <.displayname>. However, <.text_gender("he", "she")> appears to be ignoring me..."); // same as genie
+        ~chatnpc("<p,sad>Sorry, but I'm trying to talk to <.displayname>.|However <.text_gender("he", "she")> appears to be ignorning me...");
         return;
     }
     ~chatnpc("<p,sad>Sorry, but I'm trying to talk to another player.|However, they appear to be ignoring me...");
@@ -96,7 +97,7 @@ npc_settimer(0);
 // if ($random < 150) return(half_key2, 1); // 1/150 half key
 
 def_int $random = random(150);
-if (map_members = false) {
+if (map_members = ^false) {
     $random = random(36);
 }
 if ($random < 16) { // 16/150 kebab?

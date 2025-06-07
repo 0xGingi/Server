@@ -1,10 +1,10 @@
 // Unarmed Zombie
-[ai_queue3,zombie1] @unarmed_zombie;
+[ai_queue3,zombie_unarmed] @unarmed_zombie;
 [ai_queue3,zombie2] @unarmed_zombie;
 
 [label,unarmed_zombie]
 gosub(npc_death);
-if (npc_findhero = false) {
+if (npc_findhero = ^false) {
     return;
 }
 obj_add(npc_coord, npc_param(death_drop), 1, ^lootdrop_duration);
@@ -48,11 +48,11 @@ if ($dropint < 4) {
 }
 
 // Armed Zombie
-[ai_queue3,zombie3] @armed_zombie;
+[ai_queue3,zombie_armed] @armed_zombie;
 
 [label,armed_zombie]
 gosub(npc_death);
-if (npc_findhero = false) {
+if (npc_findhero = ^false) {
     return;
 }
 obj_add(npc_coord, npc_param(death_drop), 1, ^lootdrop_duration);
@@ -99,9 +99,9 @@ if ($dropint < 3) {
     obj_add(npc_coord, ~randomjewel, ^lootdrop_duration);
 }
 
-[ai_queue3,zombie_entrana]
+[ai_queue3,zombie_entranan]
 gosub(npc_death);
-if (npc_findhero = false) {
+if (npc_findhero = ^false) {
     return;
 }
 obj_add(npc_coord, npc_param(death_drop), 1, ^lootdrop_duration);
