@@ -1,4 +1,5 @@
-import Database from 'better-sqlite3';
+// eslint-disable-next-line import/no-unresolved
+import { Database } from 'bun:sqlite';
 import { Kysely, MysqlDialect, SqliteDialect } from 'kysely';
 import type { Dialect, LogEvent } from 'kysely';
 import { createPool } from 'mysql2';
@@ -7,10 +8,39 @@ import { DB } from '#/db/types.js';
 import Environment from '#/util/Environment.js';
 
 let dialect: Dialect;
+let sqliteDb: Database | null = null;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getSqliteDatabase(): any {
+    if (!sqliteDb) {
+        sqliteDb = new Database('db.sqlite');
+    }
+    
+    const originalPrepare = sqliteDb.prepare.bind(sqliteDb);
+    
+    return {
+        ...sqliteDb,
+        prepare(sql: string) {
+            const stmt = originalPrepare(sql);
+            const isReader = sql.trim().toLowerCase().startsWith('select') || 
+                           sql.trim().toLowerCase().startsWith('with') ||
+                           sql.trim().toLowerCase().startsWith('pragma');
+            
+            Object.defineProperty(stmt, 'reader', {
+                value: isReader,
+                writable: false,
+                enumerable: true,
+                configurable: false
+            });
+            
+            return stmt;
+        }
+    };
+}
 
 if (Environment.DB_BACKEND === 'sqlite') {
     dialect = new SqliteDialect({
-        database: async () => new Database('db.sqlite')
+        database: async () => getSqliteDatabase()
     });
 } else {
     dialect = new MysqlDialect({
@@ -42,7 +72,7 @@ export const loggerDb = new Kysely<DB>({
     dialect:
         Environment.DB_BACKEND === 'sqlite'
             ? new SqliteDialect({
-                database: async () => new Database('db.sqlite')
+                database: async () => getSqliteDatabase()
             })
             : new MysqlDialect({
                 pool: async () =>

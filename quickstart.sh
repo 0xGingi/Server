@@ -1,4 +1,4 @@
 #!/bin/sh
-npm i
-npm run setup
-npm run quickstart
+bun install
+bun run setup
+bun run quickstart

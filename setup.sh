@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "Installing node dependencies..."
-npm i
+echo "Installing dependencies..."
+bun install
 
 echo "Building..."
-npm run build
+bun run build

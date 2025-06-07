@@ -1,5 +1,5 @@
 @echo off
-call npm i
-call npm run setup
-call npm run quickstart
+call bun install
+call bun run setup
+call bun run quickstart
 pause

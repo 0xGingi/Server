@@ -31,9 +31,9 @@ The server includes its own web client, so you don't have to download a client!
 
 ## Workflow
 
-Content developers should run `npm start`. The server will watch for changes to scripts and configs, then automatically repack everything.
+Content developers should run `bun start`. The server will watch for changes to scripts and configs, then automatically repack everything.
 
-Engine developers should run `npm run dev`. This does what `npm start` does above, but also completely restarts the server when engine code has changed.
+Engine developers should run `bun run dev`. This does what `bun start` does above, but also completely restarts the server when engine code has changed.
 
 ## Common Issues
 
